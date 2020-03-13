@@ -5,10 +5,13 @@ verify_ssl = true
 
 [dev-packages]
 pylint = "*"
+ipython = "*"
+v = {editable = true,version = "*"}
 
 [packages]
 matplotlib = "*"
 numpy = "*"
+scipy = "*"
 
 [requires]
 python_version = "3.6"
