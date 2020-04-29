@@ -12,6 +12,7 @@ v = {editable = true,version = "*"}
 matplotlib = "*"
 numpy = "*"
 scipy = "*"
+pandas = "*"
 
 [requires]
 python_version = "3.6"

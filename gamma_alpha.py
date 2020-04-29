@@ -9,7 +9,7 @@ def Gamma(phi, R):
         A1 = R*R*R + 3*R*R + +3*R
         A2 = 3*R*R*R + 4.5*R*R
         A3 = 3*R*R*R
-        lng = math.log(1-phi) + A1*z + A2*z*z + A3*z*z*z
+        lng = -math.log(1-phi) + A1*z + A2*z*z + A3*z*z*z
         return math.exp(lng)
     else:
         return 1
@@ -36,6 +36,19 @@ goa_R1 = [math.log(Gamma(phi, R)/Alpha(phi, R, i)) for i in R1r]
 goa_phi = [math.log(Gamma(i, R)/Alpha(i, R, R1)) for i in phir]
 gamma_R = [math.log(Gamma(phi, i)) for i in Rr]
 gamma_phi = [math.log(Gamma(i, R)) for i in phir]
+
+print('goa\n2.35')
+print(Gamma(0.2, 2.5/2.35)/Alpha(0.1, 2.5/2.35, 2.5/2.35))
+print('1.9')
+print(Gamma(0.2, 2.5/1.9)/Alpha(0.1, 2.5/1.9, 2.5/1.9))
+print('squared\n2.35')
+print((Gamma(0.2, 2.5/2.35)/Alpha(0.1, 2.5/2.35, 2.5/2.35))**2)
+print('1.9')
+print((Gamma(0.2, 2.5/1.9)/Alpha(0.1, 2.5/1.9, 2.5/1.9))**2)
+print('gamma cubed\n2.35')
+print((Gamma(0.2, 2.5/2.35))**3)
+print('1.9')
+print((Gamma(0.2, 2.5/1.9))**3)
 
 fig, axs = plt.subplots(3,2)
 axs[0, 0].plot(Rr, goa_R)
