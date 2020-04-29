@@ -65,5 +65,5 @@ for key in masses:
 t_halves = [fit_params[key][2] for key in fit_params]
 log_t_halves = [np.log(i) for i in t_halves]
 plt.figure()
-plt.plot(N_inv,log_t_halves)
+plt.scatter(N_inv,log_t_halves)
 plt.show()

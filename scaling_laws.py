@@ -19,6 +19,30 @@ def half_index(mass):
             return idx
     return 0.1
 
+def half_time_line(ms,ts, half_mass):
+    m = (ms[1]-ms[0])/(ts[1]-ts[0])
+    b = ms[0]-m*ts[0]
+    t_half = (half_mass - b)/m
+    return t_half
+
+def half_time(M, t):
+    M_half = M[-1]/2.0
+    M_4 = 2*M[-1]/5.0
+    M_6 = 3*M[-1]/5.0
+    idx = 0
+    m = M[idx]
+    while m < M_4:
+        idx = idx+1
+        m = M[idx]
+    idx_4 = idx
+    while m < M_6:
+        idx = idx+1
+        m = M[idx]
+    idx_6 = idx
+    return half_time_line([M_4,M_6],[t[idx_4],t[idx_6]],M_half)
+
+
+
 def reactionData(path):
     with open(path) as file:
         jsondata = json.load(file)
@@ -46,13 +70,7 @@ for folder in models:
             data[folder][key]['mass']=[i['M'] for i in jsondata['data']['moments']]
             t=[i['t'] for i in jsondata['data']['moments']]
             data[folder][key]['t']=t
-            A = data[folder][key]['mass'][-1]
-            t_half_guess = half_index(data[folder][key]['mass'])
-            k_guess = 2.0/t_half_guess
-            init_Akt = [A, k_guess, t_half_guess]
-            params, covar = curve_fit(sigmoid, t, data[folder][key]['mass'], p0=init_Akt)
-            data[folder][key]['fit_params'] = params
-            data[folder][key]['fit'] = [sigmoid(i, params[0], params[1], params[2]) for i in t]
+            data[folder][key]['t_half']=half_time(data[folder][key]['mass'],t)
 
 
 plt.figure()
@@ -63,7 +81,7 @@ for folder in models:
     ts = []
     for key in data[folder]:
         cs.append(np.log(data[folder][key]['conc']))
-        ts.append(np.log(data[folder][key]['fit_params'][2]))
+        ts.append(np.log(data[folder][key]['t_half']))
     t_sorted = [t for _,t in sorted(zip(cs,ts))]
     c_sorted = sorted(cs)
     cube_spl = CubicSpline(c_sorted, t_sorted)
