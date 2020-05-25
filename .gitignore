@@ -1,2 +1,4 @@
 *.png
+*.json
 plots
+data
