@@ -3,9 +3,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 import math
 from scipy.optimize import curve_fit
+from scipy.interpolate import CubicSpline
+
+
+    
 
 #folder = '/Users/john/Development/Dissertation/analysis/data/k2a_sweep'
-folder = '/Users/john/Development/Dissertation/analysis/data/k2a_sweep/n3'
+folder = '/Users/john/Development/Dissertation/analysis/data/k2a_sweep/n3/expanded'
 data = getData(folder,'k2',runs=True)
 
 

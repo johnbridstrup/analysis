@@ -37,7 +37,8 @@ for key,data in crowdData.items():
     axes2[yidx,xidx].plot(data['t'],[i/N for i in data['M']])
     for tkey,run in data['runs'].items():
         # idx = find_idx(run['t'], data['t'])
-        axes2[yidx,xidx].plot(run['t'],[i/N for i in run['M']], linestyle='--', linewidth=0.5)
+        if int(tkey)%4==0:
+            axes2[yidx,xidx].plot(run['t'],[i/N for i in run['M']], linestyle='--', linewidth=0.5)
     axes2[yidx,xidx].set_title('M vs t ($\phi$ = {})'.format(key))
     axes2[yidx,xidx].xaxis.set_major_formatter(FormatStrFormatter('%.2f'))
     axes2[yidx,xidx].set_ylim(top=1)
@@ -53,8 +54,10 @@ leg = False
 lines = ['nucleation','addition','fragmentation','secondary-nucleation']
 markers = ['o','s','x','^']
 for key,data in crowdData.items():
-    if 2*yidx + xidx == 3:
+    if 2*yidx + xidx == 1:
         leg = True
+    else:
+        leg = False
     for reac,marker in zip(lines,markers):
         axes3[yidx,xidx].scatter(data['reactions']['t'],data['reactions'][reac], marker=marker, s=2)
     if leg:

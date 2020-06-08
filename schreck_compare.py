@@ -1,8 +1,9 @@
-from smoluchowskiMPL import smolMP
+from rate_equations.smoluchowskiMPL import smolMP
 import matplotlib.pyplot as plt
 from scipy.integrate import odeint
 import math
 import numpy as np
+from utilities import getData
 
 def gamma(phi, r1, rc, rsc):
     if phi != 0:
@@ -58,7 +59,7 @@ k2 = math.pow(gamm, n2)*k2_0
 c = [c_0, 0, 0]
 
 dcdt = smolMP(kp, km, kfp, kfm, kn, k2, nc, n2)
-t = np.linspace(0, 8, 400)
+t = np.linspace(0, 10, 400)
 
 sol = odeint(dcdt, c, t)
 
@@ -66,13 +67,43 @@ L=[0]
 L.extend([a/b for a,b in zip(sol[1:,1],sol[1:,2])])
 
 fig, ax1 = plt.subplots()
+fig2, ax2 = plt.subplots()
 ax1.set_xlabel('time')
-ax1.plot(t, sol[:,0], 'b')
-ax1.plot(t, sol[:,1], 'r')
-plt.figure()
-plt.plot(t, [i/j for i,j in zip(sol[:,1],sol[:,2])], 'g')
+# ax1.plot(t, sol[:,0], 'b')
+ax1.plot(t, [i/c_0 for i in sol[:,1]], color='k',linestyle='--')
+ax2.plot(t,[i/j for i,j in zip(sol[:,1],sol[:,2])], color='k', linestyle='--')
+# plt.figure()
+# plt.plot(t, [i/j for i,j in zip(sol[:,1],sol[:,2])], 'g')
 
 # ax2 = ax1.twinx()
 # ax2.plot(t, L)
+
+
+folder_path = 'data/schreck_comp'
+data = getData(folder_path, 'N')
+
+M = [i/30000 for i in data['30000']['M']]
+M60 = [i/60000 for i in data['60000']['M']]
+M50 = [i/50000 for i in data['50000']['M']]
+M40 = [i/40000 for i in data['40000']['M']]
+M20 = [i/20000 for i in data['20000']['M']]
+M10 = [i/10000 for i in data['10000']['M']]
+L = data['30000']['L']
+L10 = data['10000']['L']
+L20 = data['20000']['L']
+L40 = data['40000']['L']
+L50 = data['50000']['L']
+L60 = data['60000']['L']
+st = data['30000']['t']
+# ax1.plot(st, M, 'b')
+# ax1.plot(st, M10, 'g')
+# ax1.plot(st, M20, 'k')
+ax1.plot(st, M60, 'b')
+# ax1.plot(st, M10, 'g')
+# ax2.plot(st, L, 'b')
+ax2.plot(st, L10, 'g')
+# ax2.plot(st, L20, 'k')
+# ax2.plot(st, L40, 'm')
+ax2.plot(st, L60, 'b')
 fig.tight_layout()
 plt.show()

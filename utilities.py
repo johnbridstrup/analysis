@@ -101,7 +101,7 @@ def half_time_line(ms,ts, half_mass):
     t_half = (half_mass - b)/m
     return t_half
 
-def half_time(M, t):
+def half_time(M, t, slope=False):
     M_half = M[-1]/2.0
     M_4 = 2*M[-1]/5.0
     M_6 = 3*M[-1]/5.0
@@ -115,6 +115,9 @@ def half_time(M, t):
         idx = idx+1
         m = M[idx]
     idx_6 = idx
+    if slope:
+        sl = (M_6-M_4)/(t[idx_6]-t[idx_4])
+        return half_time_line([M_4,M_6],[t[idx_4],t[idx_6]],M_half),sl
     return half_time_line([M_4,M_6],[t[idx_4],t[idx_6]],M_half)
 def sigmoid(t, A, k, t_half):
     output = A/(1 + np.exp(-k*(t - t_half)))
